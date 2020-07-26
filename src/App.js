@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
 import Notification from "./components/Notification";
-
 import LoginForm from "./components/LoginForm";
 import DisplayBlog from "./components/DisplayBlog";
 
@@ -88,6 +87,26 @@ const App = () => {
       }, 3000);
    };
 
+   //  Handles like/dislike button in Blog component
+   const handleLikeDislike = async (id, newBlogObject, type) => {
+      blogService.setToken(user.token);
+
+      try {
+         await blogService.update(id, newBlogObject);
+         blogService.getAll().then((blogs) => setBlogs(blogs));
+         setNotification(`Post ${type}`);
+         setNotificationStyle("success");
+      } catch (error) {
+         setNotification(`Something went wrong. Please try again later.`);
+         setNotificationStyle("error");
+      }
+
+      setTimeout(() => {
+         setNotification("");
+         setNotificationStyle("");
+      }, 3000);
+   };
+
    return (
       <div>
          <h2>{!user ? "Please login" : "Blogs"}</h2>
@@ -99,7 +118,11 @@ const App = () => {
          {!user ? (
             <LoginForm handleLogin={handleLogin} />
          ) : (
-            <DisplayBlog createBlog={createBlog} blogs={blogs} />
+            <DisplayBlog
+               createBlog={createBlog}
+               blogs={blogs}
+               handleLikeDislike={handleLikeDislike}
+            />
          )}
       </div>
    );

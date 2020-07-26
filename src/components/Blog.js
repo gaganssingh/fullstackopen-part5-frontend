@@ -2,8 +2,24 @@ import React, { useState } from "react";
 
 import "./Blog.css";
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, handleLikeDislike }) => {
    const [showDetails, setShowDetails] = useState(false);
+
+   const likeBlog = async () => {
+      const changedBlog = {
+         ...blog,
+         likes: blog.likes + 1,
+      };
+      handleLikeDislike(blog.id, changedBlog, "liked");
+   };
+
+   const dislikeBlog = async () => {
+      const changedBlog = {
+         ...blog,
+         likes: blog.likes - 1,
+      };
+      handleLikeDislike(blog.id, changedBlog, "disliked");
+   };
 
    const compactDisplay = (
       <>
@@ -17,7 +33,8 @@ const Blog = ({ blog }) => {
          <p>Url: {blog.url}</p>
          <p>
             Likes: {blog.likes}
-            <button>like</button>
+            <button onClick={likeBlog}>like</button>
+            <button onClick={dislikeBlog}>dislike</button>
          </p>
          <p>Author: {blog.author}</p>
       </>
