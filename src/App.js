@@ -10,9 +10,7 @@ const App = () => {
    const [username, setUsername] = useState("");
    const [password, setPassword] = useState("");
    const [user, setUser] = useState(null);
-   const [newTitle, setNewTitle] = useState("");
-   const [newAuthor, setNewAuthor] = useState("");
-   const [newUrl, setNewUrl] = useState("");
+
    const [notification, setNotification] = useState("");
    const [notificationStyle, setNotificationStyle] = useState("");
    const [showBlogForm, setShowBlogForm] = useState(false);
@@ -73,32 +71,18 @@ const App = () => {
       }, 3000);
    };
 
-   const addBlog = async (e) => {
-      console.log("clicked");
-      e.preventDefault();
-
-      const newBlog = {
-         title: newTitle,
-         author: newAuthor,
-         url: newUrl,
-         likes: Math.floor(Math.random() * 100),
-      };
-
+   const createBlog = async (newBlogObject) => {
       blogService.setToken(user.token);
 
       try {
-         const blogObject = await blogService.create(newBlog);
+         const blogObject = await blogService.create(newBlogObject);
          setBlogs(blogs.concat(blogObject));
-         setNewTitle("");
-         setNewAuthor("");
-         setNewUrl("");
          setNotification(
             `A new blog titled "${blogObject.title}" by ${blogObject.author} added.`
          );
          setNotificationStyle("success");
       } catch (error) {
-         console.log(error);
-         //  setNotification();
+         setNotification(`Something went wrong. Please try again later.`);
          setNotificationStyle("error");
       }
 
@@ -137,13 +121,7 @@ const App = () => {
 
          {showBlogForm && (
             <NewBlog
-               addBlog={addBlog}
-               newTitle={newTitle}
-               setNewTitle={setNewTitle}
-               newAuthor={newAuthor}
-               setNewAuthor={setNewAuthor}
-               newUrl={newUrl}
-               setNewUrl={setNewUrl}
+               createBlog={createBlog}
                setShowBlogForm={setShowBlogForm}
             />
          )}

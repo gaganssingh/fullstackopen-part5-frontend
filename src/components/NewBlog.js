@@ -1,16 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 
-const NewBlog = (props) => {
-   const {
-      addBlog,
-      newTitle,
-      setNewTitle,
-      newAuthor,
-      setNewAuthor,
-      newUrl,
-      setNewUrl,
-      setShowBlogForm,
-   } = props;
+const NewBlog = ({ createBlog, setShowBlogForm }) => {
+   const [newTitle, setNewTitle] = useState("");
+   const [newAuthor, setNewAuthor] = useState("");
+   const [newUrl, setNewUrl] = useState("");
+
+   const addBlog = (e) => {
+      e.preventDefault();
+      createBlog({
+         title: newTitle,
+         author: newAuthor,
+         url: newUrl,
+         likes: Math.floor(Math.random() * 100),
+      });
+      setNewTitle("");
+      setNewAuthor("");
+      setNewUrl("");
+   };
 
    return (
       <>
