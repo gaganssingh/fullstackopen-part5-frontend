@@ -3,6 +3,7 @@ import Blog from "./components/Blog";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
 import Notification from "./components/Notification";
+import NewBlog from "./components/NewBlog";
 
 const App = () => {
    const [blogs, setBlogs] = useState([]);
@@ -14,6 +15,7 @@ const App = () => {
    const [newUrl, setNewUrl] = useState("");
    const [notification, setNotification] = useState("");
    const [notificationStyle, setNotificationStyle] = useState("");
+   const [showBlogForm, setShowBlogForm] = useState(false);
 
    //  Initial loading of all blogs when app first loads
    useEffect(() => {
@@ -81,7 +83,6 @@ const App = () => {
          url: newUrl,
          likes: Math.floor(Math.random() * 100),
       };
-      console.log(newBlog);
 
       blogService.setToken(user.token);
 
@@ -132,32 +133,20 @@ const App = () => {
    const displayBlog = () => (
       <div>
          <h2>blogs</h2>
-         <form onSubmit={addBlog}>
-            <h2>Create new blog</h2>
-            title:
-            <input
-               type="text"
-               value={newTitle}
-               onChange={({ target }) => setNewTitle(target.value)}
+         <button onClick={() => setShowBlogForm(true)}>Create Blog</button>
+
+         {showBlogForm && (
+            <NewBlog
+               addBlog={addBlog}
+               newTitle={newTitle}
+               setNewTitle={setNewTitle}
+               newAuthor={newAuthor}
+               setNewAuthor={setNewAuthor}
+               newUrl={newUrl}
+               setNewUrl={setNewUrl}
+               setShowBlogForm={setShowBlogForm}
             />
-            <div>
-               author:
-               <input
-                  type="text"
-                  value={newAuthor}
-                  onChange={({ target }) => setNewAuthor(target.value)}
-               />
-            </div>
-            <div>
-               url:
-               <input
-                  type="text"
-                  value={newUrl}
-                  onChange={({ target }) => setNewUrl(target.value)}
-               />
-            </div>
-            <button>create</button>
-         </form>
+         )}
          <br />
          {blogs.map((blog) => (
             <Blog key={blog.id} blog={blog} />
