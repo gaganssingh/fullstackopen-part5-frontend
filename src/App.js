@@ -4,11 +4,11 @@ import blogService from "./services/blogs";
 import loginService from "./services/login";
 import Notification from "./components/Notification";
 import NewBlog from "./components/NewBlog";
+import LoginForm from "./components/LoginForm";
 
 const App = () => {
    const [blogs, setBlogs] = useState([]);
-   const [username, setUsername] = useState("");
-   const [password, setPassword] = useState("");
+
    const [user, setUser] = useState(null);
 
    const [notification, setNotification] = useState("");
@@ -29,14 +29,10 @@ const App = () => {
       }
    }, []);
 
-   const handleLogin = async (event) => {
-      event.preventDefault();
-
+   //  Handles the logic for user login
+   const handleLogin = async (loginObject) => {
       try {
-         const user = await loginService.login({
-            username,
-            password,
-         });
+         const user = await loginService.login(loginObject);
 
          window.localStorage.setItem(
             "loggedInBlogAppUser",
@@ -44,8 +40,8 @@ const App = () => {
          );
          blogService.setToken(user.token);
          setUser(user);
-         setUsername("");
-         setPassword("");
+         //  setUsername("");
+         //  setPassword("");
          setNotification("Successfully logged in");
          setNotificationStyle("success");
       } catch (exception) {
@@ -59,6 +55,7 @@ const App = () => {
       }, 3000);
    };
 
+   //  Handles the logic for user logout
    const handleLogout = () => {
       window.localStorage.removeItem("loggedInBlogAppUser");
       setUser(null);
@@ -71,6 +68,7 @@ const App = () => {
       }, 3000);
    };
 
+   //  Handles the logic for creating a new blog
    const createBlog = async (newBlogObject) => {
       blogService.setToken(user.token);
 
@@ -92,33 +90,10 @@ const App = () => {
       }, 3000);
    };
 
-   const loginForm = () => (
-      <form onSubmit={handleLogin}>
-         <label htmlFor="username">username</label>
-         <input
-            type="text"
-            name="username"
-            id="username"
-            value={username}
-            onChange={({ target }) => setUsername(target.value)}
-         />
-         <label htmlFor="password">password</label>
-         <input
-            type="password"
-            name="password"
-            id="password"
-            value={password}
-            onChange={({ target }) => setPassword(target.value)}
-         />
-         <button>login</button>
-      </form>
-   );
-
    const displayBlog = () => (
       <div>
          <h2>blogs</h2>
          <button onClick={() => setShowBlogForm(true)}>Create Blog</button>
-
          {showBlogForm && (
             <NewBlog
                createBlog={createBlog}
@@ -140,7 +115,7 @@ const App = () => {
          )}
          {user && <p>{user.name} is currently logged in</p>}
          {user && <button onClick={handleLogout}>logout</button>}
-         {!user ? loginForm() : displayBlog()}
+         {!user ? <LoginForm handleLogin={handleLogin} /> : displayBlog()}
       </div>
    );
 

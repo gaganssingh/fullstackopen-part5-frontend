@@ -4,7 +4,6 @@ import "./Blog.css";
 
 const Blog = ({ blog }) => {
    const [showDetails, setShowDetails] = useState(false);
-   console.log(blog[0]);
 
    const compactDisplay = (
       <>
