@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import PropTypes from "prop-types";
 
 import "./Blog.css";
 
@@ -68,6 +69,13 @@ const Blog = ({ blog, handleLikeDislike, removeBlog, username }) => {
          ) : null}
       </div>
    );
+};
+
+Blog.propTypes = {
+   blog: PropTypes.object.isRequired,
+   handleLikeDislike: PropTypes.func.isRequired,
+   removeBlog: PropTypes.func.isRequired,
+   username: PropTypes.string.isRequired,
 };
 
 export default Blog;
