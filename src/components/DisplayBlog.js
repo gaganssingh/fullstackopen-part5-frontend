@@ -6,6 +6,14 @@ import Blog from "./Blog";
 const DisplayBlog = ({ createBlog, blogs, handleLikeDislike }) => {
    const [showBlogForm, setShowBlogForm] = useState(false);
 
+   // Create a copy of the blogs array
+   let blogsSortedByLikes = [...blogs];
+
+   // Sort by number of likes, highest likes first (decending order)
+   blogsSortedByLikes.sort((a, b) =>
+      a.likes < b.likes ? 1 : b.likes < a.likes ? -1 : 0
+   );
+
    return (
       <div>
          <h2>blogs</h2>
@@ -17,7 +25,7 @@ const DisplayBlog = ({ createBlog, blogs, handleLikeDislike }) => {
             />
          )}
          <br />
-         {blogs.map((blog) => (
+         {blogsSortedByLikes.map((blog) => (
             <Blog
                key={blog.id}
                blog={blog}
