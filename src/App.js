@@ -107,6 +107,31 @@ const App = () => {
       }, 3000);
    };
 
+   //  Delete a blog logic
+   const removeBlog = async (id) => {
+      blogService.setToken(user.token);
+
+      if (window.confirm("Are you sure you want to remove this blog?")) {
+         try {
+            await blogService.deleteBlog(id);
+            blogService.getAll().then((blogs) => setBlogs(blogs));
+            setNotification(`Deleted blog`);
+            setNotificationStyle("success");
+         } catch (error) {
+            setNotification(`Something went wrong. Please try again later`);
+            setNotificationStyle("error");
+         }
+      } else {
+         setNotification(`Blog removal canceled`);
+         setNotificationStyle("error");
+      }
+
+      setTimeout(() => {
+         setNotification("");
+         setNotificationStyle("");
+      }, 3000);
+   };
+
    return (
       <div>
          <h2>{!user ? "Please login" : "Blogs"}</h2>
@@ -122,6 +147,8 @@ const App = () => {
                createBlog={createBlog}
                blogs={blogs}
                handleLikeDislike={handleLikeDislike}
+               removeBlog={removeBlog}
+               username={user.username}
             />
          )}
       </div>

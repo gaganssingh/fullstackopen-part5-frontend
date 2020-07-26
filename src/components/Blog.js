@@ -2,9 +2,10 @@ import React, { useState } from "react";
 
 import "./Blog.css";
 
-const Blog = ({ blog, handleLikeDislike }) => {
+const Blog = ({ blog, handleLikeDislike, removeBlog, username }) => {
    const [showDetails, setShowDetails] = useState(false);
 
+   // increment like
    const likeBlog = async () => {
       const changedBlog = {
          ...blog,
@@ -13,6 +14,7 @@ const Blog = ({ blog, handleLikeDislike }) => {
       handleLikeDislike(blog.id, changedBlog, "liked");
    };
 
+   // decrement like
    const dislikeBlog = async () => {
       const changedBlog = {
          ...blog,
@@ -20,6 +22,19 @@ const Blog = ({ blog, handleLikeDislike }) => {
       };
       handleLikeDislike(blog.id, changedBlog, "disliked");
    };
+
+   // remove/delete blog logic
+   const handleRemove = () => {
+      removeBlog(blog.id);
+   };
+
+   // Show remove button only for the blogs created by currently logged in user
+   let showRemoveButton;
+   if (blog.user && blog.user.username === username) {
+      showRemoveButton = true;
+   } else {
+      showRemoveButton = false;
+   }
 
    const compactDisplay = (
       <>
@@ -46,6 +61,11 @@ const Blog = ({ blog, handleLikeDislike }) => {
          <button onClick={() => setShowDetails(!showDetails)}>
             {showDetails ? "Hide" : "Show"}
          </button>
+         {showDetails & showRemoveButton ? (
+            <button className="remove-blog" onClick={handleRemove}>
+               Remove Blog
+            </button>
+         ) : null}
       </div>
    );
 };

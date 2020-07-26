@@ -3,7 +3,8 @@ import React, { useState } from "react";
 import NewBlog from "./NewBlog";
 import Blog from "./Blog";
 
-const DisplayBlog = ({ createBlog, blogs, handleLikeDislike }) => {
+const DisplayBlog = (props) => {
+   const { createBlog, blogs, handleLikeDislike, removeBlog, username } = props;
    const [showBlogForm, setShowBlogForm] = useState(false);
 
    // Create a copy of the blogs array
@@ -30,6 +31,8 @@ const DisplayBlog = ({ createBlog, blogs, handleLikeDislike }) => {
                key={blog.id}
                blog={blog}
                handleLikeDislike={handleLikeDislike}
+               removeBlog={removeBlog}
+               username={username}
             />
          ))}
       </div>
