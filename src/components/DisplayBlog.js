@@ -18,7 +18,12 @@ const DisplayBlog = (props) => {
    return (
       <div>
          <h2>blogs</h2>
-         <button onClick={() => setShowBlogForm(true)}>Create Blog</button>
+         <button
+            id="show-create-blog-btn"
+            onClick={() => setShowBlogForm(true)}
+         >
+            Create Blog
+         </button>
          {showBlogForm && (
             <NewBlog
                createBlog={createBlog}

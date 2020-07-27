@@ -47,8 +47,8 @@ const Blog = ({ blog, handleLikeDislike, removeBlog, username }) => {
       <>
          <p>Title: {blog.title}</p>
          <p>Url: {blog.url}</p>
-         <p>
-            Likes: {blog.likes}
+         <p id="likes">
+            Likes: <span id="num-likes">{blog.likes}</span>
             <button id="like-btn" onClick={likeBlog}>
                like
             </button>
@@ -61,11 +61,15 @@ const Blog = ({ blog, handleLikeDislike, removeBlog, username }) => {
    return (
       <div className="Blog">
          {!showDetails ? compactDisplay : detailedDisplay}
-         <button onClick={() => setShowDetails(!showDetails)}>
+         <button id="show-btn" onClick={() => setShowDetails(!showDetails)}>
             {showDetails ? "Hide" : "Show"}
          </button>
          {showDetails & showRemoveButton ? (
-            <button className="remove-blog" onClick={handleRemove}>
+            <button
+               id="remove-blog-btn"
+               className="remove-blog"
+               onClick={handleRemove}
+            >
                Remove Blog
             </button>
          ) : null}

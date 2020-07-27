@@ -47,7 +47,7 @@ const NewBlog = ({ createBlog, setShowBlogForm }) => {
                   onChange={({ target }) => setNewUrl(target.value)}
                />
             </div>
-            <button>Create</button>
+            <button id="create-blog-btn">Create</button>
          </form>
          <button onClick={() => setShowBlogForm(false)}>Cancel</button>
       </>
